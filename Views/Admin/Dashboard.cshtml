@@ -1,0 +1,20 @@
+@{
+    ViewData["Title"] = "Адмін-панель";
+}
+
+<div class="page-header">
+    <h1>Адмін-панель</h1>
+    <p class="text-muted">Керування вмістом сайту webkino</p>
+</div>
+
+<div class="row g-4">
+    <div class="col-md-6 col-lg-4">
+        <div class="card admin-card h-100">
+            <div class="card-body">
+                <h5 class="card-title">Фільми</h5>
+                <p class="card-text">Перегляд, додавання та подальше редагування фільмів.</p>
+                <a asp-controller="Admin" asp-action="Movies" class="btn btn-dark">Перейти</a>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,95 @@
+@model webkino.ViewModels.MovieDetailsViewModel
+@using Microsoft.AspNetCore.Http
+
+@{
+    ViewData["Title"] = "Деталі фільму";
+}
+
+<h1 class="mb-4">@Model.Title</h1>
+
+<div class="card movie-card mb-4">
+    <div class="card-body">
+        <h5 class="card-title">Інформація про фільм</h5>
+
+        <p><strong>Назва:</strong> @Model.Title</p>
+        <p><strong>Опис:</strong> @(string.IsNullOrWhiteSpace(Model.Description) ? "Опис відсутній" : Model.Description)</p>
+        <p><strong>Рік випуску:</strong> @Model.ReleaseYear</p>
+        <p><strong>Рейтинг:</strong> @Model.Rating</p>
+        <p><strong>Студія:</strong> @Model.StudioName</p>
+        <p><strong>Країна студії:</strong> @Model.StudioCountry</p>
+
+        @if (!string.IsNullOrWhiteSpace(Model.VideoUrl))
+        {
+            <p>
+                <strong>Відео:</strong>
+                <a href="@Model.VideoUrl" target="_blank" class="btn btn-sm btn-outline-primary ms-2">
+                    Дивитися
+                </a>
+            </p>
+        }
+    </div>
+</div>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        <h5 class="card-title mb-3">Коментарі</h5>
+
+        @if (TempData["CommentError"] != null)
+        {
+            <div class="alert alert-danger">
+                @TempData["CommentError"]
+            </div>
+        }
+
+        @if (Context.Session.GetInt32("UserId") != null)
+        {
+            <form asp-controller="Movie" asp-action="AddComment" method="post" class="mb-4">
+                <input type="hidden" asp-for="NewComment.MovieId" />
+
+                <div class="mb-3">
+                    <label asp-for="NewComment.Content" class="form-label">Ваш коментар</label>
+                    <textarea asp-for="NewComment.Content" class="form-control" rows="4"></textarea>
+                    <span asp-validation-for="NewComment.Content" class="text-danger"></span>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Додати коментар</button>
+            </form>
+        }
+        else
+        {
+            <div class="alert alert-info">
+                Щоб залишити коментар, потрібно увійти в акаунт.
+            </div>
+        }
+
+        @if (!Model.Comments.Any())
+        {
+            <p class="text-muted">Коментарів поки немає.</p>
+        }
+        else
+        {
+            @foreach (var comment in Model.Comments)
+            {
+                <div class="border rounded p-3 mb-3">
+                    <div class="d-flex justify-content-between">
+                        <strong>@comment.Username</strong>
+                        <span class="text-muted">@comment.CreatedAt.ToString("dd.MM.yyyy HH:mm")</span>
+                    </div>
+                    <div class="mt-2">
+                        @comment.Content
+                    </div>
+                </div>
+            }
+        }
+
+        <a asp-controller="Movie"
+           asp-action="Index"
+           class="btn btn-secondary mt-3">
+            Назад до списку
+        </a>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

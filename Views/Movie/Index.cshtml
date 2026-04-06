@@ -1,0 +1,63 @@
+@model List<webkino.ViewModels.MovieViewModel>
+
+@{
+    ViewData["Title"] = "Каталог фільмів";
+}
+
+<div class="page-header">
+    <h1>Каталог фільмів</h1>
+    <p class="text-muted">Переглядайте список доступних фільмів</p>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">
+        У базі даних поки немає фільмів.
+    </div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table custom-table align-middle">
+            <thead>
+                <tr>
+                    <th>Назва</th>
+                    <th>Рік</th>
+                    <th>Рейтинг</th>
+                    <th>Студія</th>
+                    <th>Відео</th>
+                    <th>Дії</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var movie in Model)
+                {
+                    <tr>
+                        <td>@movie.Title</td>
+                        <td>@movie.ReleaseYear</td>
+                        <td>@movie.Rating</td>
+                        <td>@movie.StudioName</td>
+                        <td>
+                            @if (!string.IsNullOrWhiteSpace(movie.VideoUrl))
+                            {
+                                <a href="@movie.VideoUrl" target="_blank" class="btn btn-sm btn-outline-primary">Відео</a>
+                            }
+                            else
+                            {
+                                <span class="text-muted">Немає</span>
+                            }
+                        </td>
+                        <td>
+                            <a asp-controller="Movie"
+                               asp-action="Details"
+                               asp-route-id="@movie.Id"
+                               class="btn btn-primary btn-sm">
+                                Детальніше
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

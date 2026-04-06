@@ -1,0 +1,69 @@
+@model webkino.ViewModels.AdminCreateMoviePageViewModel
+
+@{
+    ViewData["Title"] = "Додати фільм";
+}
+
+<div class="page-header">
+    <h1>Додати новий фільм</h1>
+    <p class="text-muted">Заповніть інформацію про фільм</p>
+</div>
+
+<div class="form-page">
+    <form asp-action="CreateMovie" method="post" class="custom-form">
+        <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+        <div class="mb-3">
+            <label asp-for="Movie.Title" class="form-label">Назва</label>
+            <input asp-for="Movie.Title" class="form-control" />
+            <span asp-validation-for="Movie.Title" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Movie.Description" class="form-label">Опис</label>
+            <textarea asp-for="Movie.Description" class="form-control" rows="5"></textarea>
+            <span asp-validation-for="Movie.Description" class="text-danger"></span>
+        </div>
+
+        <div class="row">
+            <div class="col-md-3 mb-3">
+                <label asp-for="Movie.ReleaseYear" class="form-label">Рік випуску</label>
+                <input asp-for="Movie.ReleaseYear" class="form-control" />
+                <span asp-validation-for="Movie.ReleaseYear" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-3 mb-3">
+                <label asp-for="Movie.Rating" class="form-label">Рейтинг</label>
+                <input asp-for="Movie.Rating" class="form-control" />
+                <span asp-validation-for="Movie.Rating" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label asp-for="Movie.VideoUrl" class="form-label">Посилання на відео</label>
+                <input asp-for="Movie.VideoUrl" class="form-control" placeholder="https://..." />
+                <span asp-validation-for="Movie.VideoUrl" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Movie.StudioId" class="form-label">Студія</label>
+            <select asp-for="Movie.StudioId" class="form-select">
+                <option value="">-- Оберіть студію --</option>
+                @foreach (var studio in Model.Studios)
+                {
+                    <option value="@studio.Id">@studio.Name</option>
+                }
+            </select>
+            <span asp-validation-for="Movie.StudioId" class="text-danger"></span>
+        </div>
+
+        <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-success">Зберегти</button>
+            <a asp-controller="Admin" asp-action="Movies" class="btn btn-outline-secondary">Назад</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

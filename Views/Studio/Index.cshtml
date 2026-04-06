@@ -1,0 +1,36 @@
+@model List<webkino.ViewModels.StudioViewModel>
+
+@{
+    ViewData["Title"] = "Студії";
+}
+
+<h1 class="mb-4">Список студій</h1>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">
+        У базі даних поки немає студій.
+    </div>
+}
+else
+{
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>Назва</th>
+                <th>Країна</th>
+                <th>Кількість фільмів</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var studio in Model)
+            {
+                <tr>
+                    <td>@studio.Name</td>
+                    <td>@studio.Country</td>
+                    <td>@studio.MoviesCount</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
